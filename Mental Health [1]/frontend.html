@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mental Health Prediction</title>
+    <style>
+        /* Reset and Box Sizing */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        body {
+            background-color: #f0f4f8;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .project-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 450px;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .heading {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .box {
+            width: 100%;
+            padding: 15px;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #333;
+            background-color: #f9f9f9;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .box:focus {
+            border-color: #a5b4fc;
+            box-shadow: 0 0 5px rgba(163, 175, 255, 0.5);
+        }
+
+        .btn-pink {
+            background-color: #f26b8a;
+            color: #ffffff;
+            font-size: 18px;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .btn-pink:hover {
+            background-color: #f24b6c;
+            transform: scale(1.05);
+        }
+
+        .btn-pink:active {
+            transform: scale(1);
+        }
+
+        h2 {
+            color: #555;
+            font-size: 22px;
+            margin-top: 25px;
+        }
+
+        .recommendations {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .recommendations h3 {
+            color: #444;
+            font-size: 20px;
+        }
+
+        .recommendations ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .recommendations li {
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
+        }
+
+        .recommendations li strong {
+            color: #f26b8a;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 500px) {
+            .project-container {
+                width: 90%;
+                padding: 20px;
+            }
+
+            .heading {
+                font-size: 26px;
+            }
+
+            .box {
+                font-size: 14px;
+                padding: 12px;
+            }
+
+            .btn-pink {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+
+            h2 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="project-container">
+        <h1 class="heading">Mental Health Prediction</h1>
+    
+        <!-- Main Input For Receiving Query to our ML -->
+        <form action="{{ url_for('predict_datapoint')}}" class="Name" method="post">
+            <label for="sentence">Enter Sentence:</label>
+            <input type="text" id="sentence" class="box" name="Sentence" placeholder="Enter a sentence..." value="{{ Sentence }}" required>
+            <button type="submit" class="btn-pink">Predict</button>
+        </form>
+
+        <h2>
+            Mental Health Prediction: <span>{{result}}</span>
+        </h2>
+
+        <!-- Display the Recommendations if available -->
+        {% if recommendations %}
+        <div class="recommendations">
+            <h3>Recommended Book and Movie for {{ result }}:</h3>
+            <ul>
+                {% for rec in recommendations %}
+                    <li>
+                        <strong>Book:</strong> {{ rec[1] }} <br>
+                        <strong>Movie:</strong> {{ rec[2] }}
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+        {% else %}
+        <p>No recommendations available for this category.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
